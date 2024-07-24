@@ -16,6 +16,11 @@ export const dateToString = d => {
   return `${month.toUpperCase()}-${year.slice(2, 4)}`
 }
 
+export const isValidDate = d => {
+  return d instanceof Date && !isNaN(d);
+}
+
+
 export const parseCSV = str => {
   let [headers, ...lines] = str.split(';\n');
 

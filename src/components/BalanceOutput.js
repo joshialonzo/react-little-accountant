@@ -80,8 +80,110 @@ export default connect(state => {
 
   /* YOUR CODE GOES HERE */
 
-  const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
-  const totalDebit = balance.reduce((acc, entry) => acc + entry.DEBIT, 0);
+  // Map accounts to their labels
+  let accountsMap = {};
+  state.accounts.map((account) => {
+    return accountsMap[account.ACCOUNT] = account.LABEL;
+  });
+
+  // Filter journal entries based on user input
+  let filteredEntries = [];
+  state.journalEntries.map((entry) => {
+    if (
+        (
+          (
+            state.userInput.startAccount <= entry.ACCOUNT
+            &&
+            entry.ACCOUNT <= state.userInput.endAccount
+          )
+          ||
+          (
+            isNaN(state.userInput.startAccount)
+            &&
+            entry.ACCOUNT <= state.userInput.endAccount
+          )
+          ||
+          (
+            isNaN(state.userInput.endAccount)
+            &&
+            state.userInput.startAccount <= entry.ACCOUNT
+          )
+          ||
+          (
+            isNaN(state.userInput.startAccount)
+            &&
+            isNaN(state.userInput.endAccount)
+          )
+        )
+        &&
+        (
+          (
+            state.userInput.startPeriod <= entry.PERIOD
+            &&
+            entry.PERIOD <= state.userInput.endPeriod
+          )
+          ||
+          (
+            state.userInput.startPeriod <= entry.PERIOD
+            &&
+            !utils.isValidDate(state.userInput.endPeriod)
+          )
+          ||
+          (
+            !utils.isValidDate(state.userInput.startPeriod)
+            &&
+            entry.PERIOD <= state.userInput.endPeriod
+          )
+          ||
+          (
+            !utils.isValidDate(state.userInput.startPeriod)
+            &&
+            !utils.isValidDate(state.userInput.endPeriod)
+          )
+        )
+        &&
+        accountsMap[entry.ACCOUNT]
+      ) {
+      filteredEntries.push({
+        ACCOUNT: entry.ACCOUNT,
+        DESCRIPTION: accountsMap[entry.ACCOUNT],
+        DEBIT: entry.DEBIT,
+        CREDIT: entry.CREDIT,
+        BALANCE: entry.DEBIT - entry.CREDIT
+      });
+    }
+    return null;
+  });
+
+  // Calculate balance
+  let balanceMap = {};
+  filteredEntries.map((entry) => {
+    if (!balanceMap[entry.ACCOUNT]) {
+      balanceMap[entry.ACCOUNT] = {
+        ACCOUNT: entry.ACCOUNT,
+        DESCRIPTION: entry.DESCRIPTION,
+        DEBIT: 0,
+        CREDIT: 0,
+        BALANCE: 0
+      };
+    }
+    balanceMap[entry.ACCOUNT].DEBIT += entry.DEBIT;
+    balanceMap[entry.ACCOUNT].CREDIT += entry.CREDIT;
+    balanceMap[entry.ACCOUNT].BALANCE += entry.DEBIT - entry.CREDIT;
+    return null;
+  });
+
+  balance = Object.keys(balanceMap).map((key) => {
+    return balanceMap[key];
+  });
+
+  const totalCredit = balance.reduce((acc, entry) => {
+    return acc + entry.CREDIT;
+  }, 0);
+  
+  const totalDebit = balance.reduce((acc, entry) => {
+    return acc + entry.DEBIT;
+  }, 0);
 
   return {
     balance,

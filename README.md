@@ -1,4 +1,6 @@
-# Coding Challenge
+# Josué Alonzo: Little Accountant
+
+## Coding Challenge
 
 Your task is to finish the Redux `mapStateToProps` function to a program to help an accountant to get balances from accounting journals.
 
@@ -42,3 +44,17 @@ Parsing input fields and storing in Redux has already been implemented; it's up 
 ## Post challenge
 
 After you're done, commit your changes, push to your GitHub and send us a link.
+
+## Repository
+
+* [Josué Alonzo: React Little Accountant](https://github.com/joshialonzo/react-little-accountant)
+
+## References
+
+* [How to Install Yarn on Debian 12](https://www.geeksforgeeks.org/how-to-install-yarn-on-debian-12/)
+* [Yarn Usage](https://classic.yarnpkg.com/lang/en/docs/usage/)
+* [Connect: Extracting Data with mapStateToProps](https://react-redux.js.org/using-react-redux/connect-mapstate)
+* [React PropTypes](https://legacy.reactjs.org/docs/typechecking-with-proptypes.html)
+* [How to create a Dictionary with Key/Value pairs](https://www.pietschsoft.com/post/2015/09/05/javascript-basics-how-to-create-a-dictionary-with-keyvalue-pairs)
+* [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+* [Detecting an "invalid date" Date instance in JavaScript](https://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript)
